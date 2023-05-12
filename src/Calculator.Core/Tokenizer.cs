@@ -23,12 +23,12 @@
         {
             if (!Next.HasValue)
             {
-                throw new TokenizationException($"Unexpected end of input. Expected token '{kind}' at position '{_position}'");
+                throw new TokenizerException($"Unexpected end of input. Expected token '{kind}' at position '{_position}'");
             }
 
             if (Next.Value.Kind == kind)
             {
-                throw new TokenizationException($"Invalid input. Expected token '{kind}' at position '{_position}'");
+                throw new TokenizerException($"Invalid input. Expected token '{kind}' at position '{_position}'");
             }
 
             Advance();
