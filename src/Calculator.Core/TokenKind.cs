@@ -9,6 +9,9 @@
         Subtract,
         OpenBracket,
         CloseBracket,
-        Divide
+        Divide,
+        Identifier,
+        Comma,
+        Factorial
     }
 }

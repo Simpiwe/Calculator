@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.Json;
 
 namespace Calculator.Core
 {
@@ -80,6 +81,26 @@ namespace Calculator.Core
                         Position = i
                     };
                 }
+                else if (current == ',')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.Comma,
+                        Text = ",",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                //else if (current == '!')
+                //{
+                //    token = new Token()
+                //    {
+                //        Kind = TokenKind.Factorial,
+                //        Text = "!",
+                //        Length = 1,
+                //        Position = i
+                //    };
+                //}
                 else if (char.IsDigit(current))
                 {
                     int pos = i;
@@ -108,6 +129,30 @@ namespace Calculator.Core
                         Position = i,
                         Text = text,
                         Value = double.Parse(text, CultureInfo.InvariantCulture)
+                    };
+
+                    i = pos - 1;
+                }
+                else if (char.IsLetter(current))
+                {
+                    int pos = i;
+
+                    while (pos < expression.Length)
+                    {
+                        if (!char.IsLetterOrDigit(expression[pos]))
+                        {
+                            break;
+                        }
+
+                        pos++;
+                    }
+
+                    token = new Token
+                    {
+                        Kind = TokenKind.Identifier,
+                        Length = pos - i,
+                        Position = i,
+                        Text = expression[i..pos]
                     };
 
                     i = pos - 1;

@@ -13,7 +13,12 @@ while (true)
 {
     Console.Write("> ");
 
-    string? line = Console.ReadLine()?.Trim() ?? "";
+    string? line = Console.ReadLine()?.Trim();
+
+    if (string.IsNullOrEmpty(line))
+    {
+        continue;
+    }
 
     if (exitCommands.Contains(line))
     {
@@ -26,11 +31,19 @@ while (true)
         continue;
     }
 
+
     try
     {
-        double result = interpreter.Evaluate<double>(line);
+        object? result = interpreter.Evaluate<object>(line);
 
-        Console.WriteLine(result.ToString(CultureInfo.InvariantCulture));
+        if (result is double num)
+        {
+            Console.WriteLine(num.ToString(CultureInfo.InvariantCulture));
+        }
+        else 
+        {
+            Console.WriteLine("NaN");
+        }
     }
     catch (InvalidSyntaxException ex)
     {
@@ -41,11 +54,17 @@ while (true)
             Console.WriteLine(error);
         }
     }
-    catch(Exception ex)
+    catch(ApplicationException ex)
     {
         Console.ForegroundColor = ConsoleColor.DarkRed;
 
         Console.WriteLine(ex.Message);
+    }
+    catch (Exception ex)
+    {
+        Console.ForegroundColor = ConsoleColor.DarkRed;
+
+        Console.WriteLine("Uhmm... That's awkward. Something unexpected happened while parsing or evaluating your input. Please report the issue to dev. If you are dev, I'm really disappointed in you. -_-");
     }
     finally
     {
