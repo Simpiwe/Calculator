@@ -2,6 +2,6 @@
 {
     public interface ITokenizer
     {
-        IEnumerable<Token> GetTokens(string input);
+        IEnumerable<Token> Tokenize(string input);
     }
 }

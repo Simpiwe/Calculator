@@ -14,7 +14,7 @@ namespace Calculator.Core
 
         public Expression Parse(string expression)
         {
-            IReadOnlyList<Token> tokens = _tokenizer.GetTokens(expression).ToList();
+            IReadOnlyList<Token> tokens = _tokenizer.Tokenize(expression).ToList();
 
             IEnumerable<Token> unknownTokens = tokens.Where(x => x.Kind == TokenKind.Unknown);
 

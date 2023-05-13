@@ -14,11 +14,11 @@ namespace Calculator.Core.UnitTests
         [InlineData("*", TokenKind.Multiply)]
         [InlineData("/", TokenKind.Divide)]
         [InlineData("-", TokenKind.Subtract)]
-        public void GetTokens_ReturnsTheCorrectToken(string text, TokenKind kind)
+        public void Tokenize_ReturnsTheCorrectToken(string text, TokenKind kind)
         {
             Tokenizer sut = new Tokenizer();
 
-            Token token = sut.GetTokens(text).First();
+            Token token = sut.Tokenize(text).First();
 
             Assert.Equal(text, token.Text);
             Assert.Equal(kind, token.Kind);
@@ -35,11 +35,11 @@ namespace Calculator.Core.UnitTests
         [InlineData("*", TokenKind.Number)]
         [InlineData("/", TokenKind.Number)]
         [InlineData("-", TokenKind.Number)]
-        public void GetTokens_ReturnsTheCorrectTokenType(string text, TokenKind expectedType)
+        public void Tokenize_ReturnsTheCorrectTokenType(string text, TokenKind expectedType)
         {
             Tokenizer sut = new Tokenizer();
 
-            Token token = sut.GetTokens(text).First();
+            Token token = sut.Tokenize(text).First();
 
             Assert.Equal(text, token.Text);
         }
@@ -51,11 +51,11 @@ namespace Calculator.Core.UnitTests
         [InlineData(" + ")]
         [InlineData("  *     \t")]
         [InlineData("  5\n")]
-        public void GetTokens_ShouldIgnoreWhiteSpace(string text)
+        public void Tokenize_ShouldIgnoreWhiteSpace(string text)
         {
             Tokenizer sut = new Tokenizer();
 
-            Token token = sut.GetTokens(text).First();
+            Token token = sut.Tokenize(text).First();
 
             Assert.Equal(text.Trim(), token.Text);
         }

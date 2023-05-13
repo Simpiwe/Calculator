@@ -1,14 +1,11 @@
 ﻿using System.Globalization;
-using System.Text.Json;
 
 namespace Calculator.Core
 {
     public sealed class Tokenizer : ITokenizer
     {
-        public IEnumerable<Token> GetTokens(string expression)
+        public IEnumerable<Token> Tokenize(string expression)
         {
-            List<Token> tokens = new List<Token>();
-
             for (int i = 0; i < expression.Length; i++)
             {
                 Token token;
@@ -91,16 +88,6 @@ namespace Calculator.Core
                         Position = i
                     };
                 }
-                //else if (current == '!')
-                //{
-                //    token = new Token()
-                //    {
-                //        Kind = TokenKind.Factorial,
-                //        Text = "!",
-                //        Length = 1,
-                //        Position = i
-                //    };
-                //}
                 else if (char.IsDigit(current))
                 {
                     int pos = i;
@@ -182,10 +169,8 @@ namespace Calculator.Core
                     i = pos - 1;
                 }
 
-                tokens.Add(token);
+                yield return token;
             }
-
-            return tokens;
         }
     }
 }

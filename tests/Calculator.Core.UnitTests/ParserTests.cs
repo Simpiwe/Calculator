@@ -26,7 +26,7 @@ namespace Calculator.Core.UnitTests
             };
 
             Mock<ITokenizer> tokenizerMock = new Mock<ITokenizer>();
-            tokenizerMock.Setup(x => x.GetTokens(It.IsAny<string>()))
+            tokenizerMock.Setup(x => x.Tokenize(It.IsAny<string>()))
                 .Returns(new[] { token });
 
             Parser sut = new Parser(tokenizerMock.Object);
@@ -47,7 +47,7 @@ namespace Calculator.Core.UnitTests
             };
 
             Mock<ITokenizer> tokenizerMock = new Mock<ITokenizer>();
-            tokenizerMock.Setup(x => x.GetTokens(It.IsAny<string>()))
+            tokenizerMock.Setup(x => x.Tokenize(It.IsAny<string>()))
                 .Returns(new[] { token });
 
             Parser sut = new Parser(tokenizerMock.Object);
@@ -87,7 +87,7 @@ namespace Calculator.Core.UnitTests
             };
 
             Mock<ITokenizer> tokenizerMock = new Mock<ITokenizer>();
-            tokenizerMock.Setup(x => x.GetTokens(It.IsAny<string>()))
+            tokenizerMock.Setup(x => x.Tokenize(It.IsAny<string>()))
                 .Returns(tokens);
 
             Parser sut = new Parser(tokenizerMock.Object);
@@ -127,7 +127,7 @@ namespace Calculator.Core.UnitTests
             //};
 
             Mock<ITokenizer> tokenizerMock = new Mock<ITokenizer>();
-            tokenizerMock.Setup(x => x.GetTokens(It.IsAny<string>()))
+            tokenizerMock.Setup(x => x.Tokenize(It.IsAny<string>()))
                 .Returns(tokens);
 
             Parser sut = new Parser(tokenizerMock.Object);

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace Calculator.Core
 {
-    public class Interpreter
+    public class Evaluator
     {
         private readonly IParser _parser;
 
-        public Interpreter(IParser parser)
+        public Evaluator(IParser parser)
         {
             _parser = parser ?? throw new ArgumentNullException(nameof(parser));
         }

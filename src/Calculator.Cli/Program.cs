@@ -7,7 +7,7 @@ HashSet<string> exitCommands = new HashSet<string>(StringComparer.InvariantCultu
 HashSet<string> clearCommands = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase) { "clear", "cls" };
 
 Parser parser = new Parser(new Tokenizer());
-Interpreter interpreter = new Interpreter(parser);
+Evaluator interpreter = new Evaluator(parser);
 
 while (true)
 {
