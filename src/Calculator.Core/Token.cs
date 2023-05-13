@@ -1,19 +1,15 @@
 ﻿namespace Calculator.Core
 {
-    public readonly struct Token
+    public record Token
     {
-        public Token(TokenKind kind) : this(kind, null)
-        {
-        }
+        public required TokenKind Kind { get; init; }
 
-        public Token(TokenKind kind, string? value)
-        {
-            Kind = kind;
-            Value = value;
-        }
+        public string? Text { get; init; }
 
-        public TokenKind Kind { get; }
+        public object? Value { get; init; }
 
-        public string? Value { get; }
+        public required int Position { get; init; }
+
+        public required int Length { get; init; }
     }
 }

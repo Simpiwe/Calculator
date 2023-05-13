@@ -2,14 +2,6 @@
 {
     public interface ITokenizer
     {
-        Token? Current { get; }
-        
-        Token? Next { get; }
-
-        bool Peek(TokenKind kind);
-
-        bool Peek(TokenKind kind, string? value);
-
-        Token Consume(TokenKind kind);
+        IEnumerable<Token> GetTokens(ReadOnlySpan<char> input);
     }
 }

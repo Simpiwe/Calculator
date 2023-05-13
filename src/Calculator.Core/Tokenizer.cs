@@ -1,136 +1,153 @@
-﻿namespace Calculator.Core
+﻿using System.Globalization;
+
+namespace Calculator.Core
 {
     public sealed class Tokenizer : ITokenizer
     {
-        private readonly string _expression;
-        private int _position;
-
-        public Tokenizer(string expression)
+        public IEnumerable<Token> GetTokens(ReadOnlySpan<char> expression)
         {
-            if (string.IsNullOrWhiteSpace(expression))
+            List<Token> tokens = new List<Token>();
+
+            for (int i = 0; i < expression.Length; i++)
             {
-                throw new ArgumentException($"'{nameof(expression)}' cannot be null or whitespace.", nameof(expression));
-            }
+                Token token;
 
-            _expression = expression;
-        }
-
-        public Token? Current { get; private set; }
-        
-        public Token? Next { get; private set; }
-
-        public Token Consume(TokenKind kind)
-        {
-            if (!Next.HasValue)
-            {
-                throw new TokenizerException($"Unexpected end of input. Expected token '{kind}' at position '{_position}'");
-            }
-
-            if (Next.Value.Kind == kind)
-            {
-                throw new TokenizerException($"Invalid input. Expected token '{kind}' at position '{_position}'");
-            }
-
-            Advance();
-
-            return Current!.Value;
-        }
-
-        public bool Peek(TokenKind kind)
-        {
-            return Next.HasValue && Next.Value.Kind == kind;
-        }
-
-        public bool Peek(TokenKind kind, string? value)
-        {
-            return Next.HasValue && Next.Value.Kind == kind && Next.Value.Value == value;
-        }
-
-        private bool Advance()
-        {
-            bool advanced = Next.HasValue;
-
-            if (advanced)
-            {
-                if (TryGetToken(_expression.AsSpan(), _position, out Token next, out int length))
+                //skip whitespaces
+                if (char.IsWhiteSpace(expression[i]))
                 {
-                    Next = next;
-                    _position += length;
-                }
-            }
-            else
-            {
-                Current = null;
-            }
-
-            return false;
-        }
-
-        private static bool TryGetToken(ReadOnlySpan<char> expression, int position, out Token token, out int length)
-        {
-            token = default;
-            length = default;
-
-            if (position >= expression.Length)
-            {
-                return false;
-            }
-
-            char current = expression[position];
-
-            if (current == '*')
-            {
-                token = new Token(TokenKind.Multiply);
-                length = 1;
-            }
-            else if (current == '/')
-            {
-                token = new Token(TokenKind.Number);
-                length = 1;
-            }
-            else if (current == '+')
-            {
-                token = new Token(TokenKind.Add);
-                length = 1;
-            }
-            else if (current == '-')
-            {
-                token = new Token(TokenKind.Subtract);
-                length = 1;
-            }
-            else if (current == '(')
-            {
-                token = new Token(TokenKind.OpenBracket);
-            }
-            else if (current == ')')
-            {
-                token = new Token(TokenKind.CloseBracket);
-            }
-
-            if (char.IsDigit(current))
-            {
-                int i = position;
-                bool isDecimal = false;
-
-                while (i < expression.Length)
-                {
-                    if (!char.IsDigit(expression[i]) && (!isDecimal && expression[i] == '.'))
-                    {
-                        isDecimal = true;
-                    }
-                    else
-                    {
-                        break;
-                    }
-
-                    i++;
+                    continue;
                 }
 
-                token = new Token(TokenKind.Number, expression[position..i].ToString());
-                length = i - position;
+                char current = expression[i];
+
+                if (current == '*')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.Multiply,
+                        Text = "*",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                else if (current == '/')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.Divide,
+                        Text = "/",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                else if (current == '+')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.Add,
+                        Text = "+",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                else if (current == '-')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.Subtract,
+                        Text = "-",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                else if (current == '(')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.OpenBracket,
+                        Text = "(",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                else if (current == ')')
+                {
+                    token = new Token()
+                    {
+                        Kind = TokenKind.CloseBracket,
+                        Text = ")",
+                        Length = 1,
+                        Position = i
+                    };
+                }
+                else if (char.IsDigit(current))
+                {
+                    int pos = i;
+                    bool isDecimal = false;
+
+                    while (pos < expression.Length)
+                    {
+                        if (expression[pos] == '.' && !isDecimal)
+                        {
+                            isDecimal = true;
+                        }
+                        else if (!char.IsDigit(expression[pos]))
+                        {
+                            break;
+                        }
+
+                        pos++;
+                    }
+
+                    ReadOnlySpan<char> text = expression[i..pos];
+                    
+                    token = new Token
+                    {
+                        Kind = TokenKind.Number,
+                        Length = pos - i,
+                        Position = i,
+                        Text = text.ToString(),
+                        Value = double.Parse(text, CultureInfo.InvariantCulture)
+                    };
+
+                    i = pos - 1;
+                }
+                else
+                {
+                    int pos = i;
+
+                    while (pos < expression.Length)
+                    {
+                        if (char.IsWhiteSpace(expression[pos]))
+                        {
+                            break;
+                        }
+
+                        pos++;
+                    }
+
+                    token = new Token
+                    {
+                        Kind = TokenKind.Unknown,
+                        Length = pos - i,
+                        Position = i,
+                        Text = expression[i..pos].ToString()
+                    };
+
+                    i = pos - 1;
+                }
+
+                tokens.Add(token);
             }
 
-            return !token.Equals(default);
+            tokens.Add(new Token
+            {
+                Kind = TokenKind.EndOfInput,
+                Length = 0,
+                Position = expression.Length
+            });
+
+            return tokens;
         }
     }
 }

@@ -8,6 +8,8 @@
         Add,
         Subtract,
         OpenBracket,
-        CloseBracket
+        CloseBracket,
+        Divide,
+        EndOfInput
     }
 }
