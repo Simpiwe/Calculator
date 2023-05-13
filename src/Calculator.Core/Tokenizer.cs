@@ -4,7 +4,7 @@ namespace Calculator.Core
 {
     public sealed class Tokenizer : ITokenizer
     {
-        public IEnumerable<Token> GetTokens(ReadOnlySpan<char> expression)
+        public IEnumerable<Token> GetTokens(string expression)
         {
             List<Token> tokens = new List<Token>();
 
@@ -99,14 +99,14 @@ namespace Calculator.Core
                         pos++;
                     }
 
-                    ReadOnlySpan<char> text = expression[i..pos];
+                    string text = expression[i..pos];
                     
                     token = new Token
                     {
                         Kind = TokenKind.Number,
                         Length = pos - i,
                         Position = i,
-                        Text = text.ToString(),
+                        Text = text,
                         Value = double.Parse(text, CultureInfo.InvariantCulture)
                     };
 
@@ -131,7 +131,7 @@ namespace Calculator.Core
                         Kind = TokenKind.Unknown,
                         Length = pos - i,
                         Position = i,
-                        Text = expression[i..pos].ToString()
+                        Text = expression[i..pos]
                     };
 
                     i = pos - 1;
@@ -139,13 +139,6 @@ namespace Calculator.Core
 
                 tokens.Add(token);
             }
-
-            tokens.Add(new Token
-            {
-                Kind = TokenKind.EndOfInput,
-                Length = 0,
-                Position = expression.Length
-            });
 
             return tokens;
         }

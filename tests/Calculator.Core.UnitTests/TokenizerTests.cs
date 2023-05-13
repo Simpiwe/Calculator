@@ -44,22 +44,6 @@ namespace Calculator.Core.UnitTests
         }
 
         [Theory]
-        [InlineData("ff")]
-        [InlineData("43")]
-        [InlineData("2")]
-        [InlineData("+")]
-        [InlineData("*")]
-        [InlineData("/")]
-        public void GetTokens_ReturnsTheEndOfInputToken(string text)
-        {
-            Tokenizer sut = new Tokenizer();
-
-            Token token = sut.GetTokens(text).Last();
-
-            Assert.Equal(TokenKind.EndOfInput, token.Kind);
-        }
-
-        [Theory]
         [InlineData("   ff")]
         [InlineData("43     ")]
         [InlineData("  2  ")]

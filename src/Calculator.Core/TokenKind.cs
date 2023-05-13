@@ -9,7 +9,6 @@
         Subtract,
         OpenBracket,
         CloseBracket,
-        Divide,
-        EndOfInput
+        Divide
     }
 }
