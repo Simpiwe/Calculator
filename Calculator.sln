@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4DBA4910-79B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{58ECEAD6-D895-4B5C-ACD6-DE17ACDA4A46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Core.UnitTests", "tests\Calculator.Core.UnitTests\Calculator.Core.UnitTests.csproj", "{0980C97E-B654-4A0C-AC27-FA813DFD7A21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator.Core.UnitTests", "tests\Calculator.Core.UnitTests\Calculator.Core.UnitTests.csproj", "{0980C97E-B654-4A0C-AC27-FA813DFD7A21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator.Cli", "src\Calculator.Cli\Calculator.Cli.csproj", "{2F962975-C20B-4695-8D7F-128BD1072063}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{0980C97E-B654-4A0C-AC27-FA813DFD7A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0980C97E-B654-4A0C-AC27-FA813DFD7A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0980C97E-B654-4A0C-AC27-FA813DFD7A21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F962975-C20B-4695-8D7F-128BD1072063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F962975-C20B-4695-8D7F-128BD1072063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F962975-C20B-4695-8D7F-128BD1072063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F962975-C20B-4695-8D7F-128BD1072063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{0DE15F54-4E5E-4250-A5C9-002F9BAE6024} = {4DBA4910-79B9-45FB-81E0-0E6F741D8E0E}
 		{0980C97E-B654-4A0C-AC27-FA813DFD7A21} = {58ECEAD6-D895-4B5C-ACD6-DE17ACDA4A46}
+		{2F962975-C20B-4695-8D7F-128BD1072063} = {4DBA4910-79B9-45FB-81E0-0E6F741D8E0E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E44B2D2-2FC1-4E8B-A0E1-40C43083F913}

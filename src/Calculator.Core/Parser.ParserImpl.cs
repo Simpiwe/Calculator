@@ -4,12 +4,13 @@ namespace Calculator.Core
 {
     /*
     Grammar:
-        additive        : term ((+ | -) additive)*
+        additive        : (PLUS | MINUS) additive
+                        : term ((PLUS | MINUS) additive)*
 
         term            : LBracket additive RBracket
                         : atom ((* | /) term)*
 
-        atom            : (+ | - | ) <number>
+        atom            : <number>
     */
     public sealed partial class Parser
     {
@@ -56,7 +57,23 @@ namespace Calculator.Core
 
             private static Expression Additive(IReadOnlyList<Token> tokens, ref int position)
             {
-                Expression left = Term(tokens, ref position);
+                Expression left;
+
+                bool negate = IsTokenKind(tokens, position, TokenKind.Subtract);
+                if (negate || IsTokenKind(tokens, position, TokenKind.Add))
+                {
+                    position++;
+
+                    left = Additive(tokens, ref position);
+                    
+                    return negate ? Expression.Negate(left) : left;
+                }
+
+                left = Term(tokens, ref position);
+                if (negate)
+                {
+                    left = Expression.Negate(left);
+                }
 
                 if (IsTokenKind(tokens, position, TokenKind.Add))
                 {
@@ -109,24 +126,16 @@ namespace Calculator.Core
 
             private static Expression Atom(IReadOnlyList<Token> tokens, ref int position)
             {
-                bool negate = IsTokenKind(tokens, position, TokenKind.Subtract);
-
-                if (negate || IsTokenKind(tokens, position, TokenKind.Add))
-                {
-                    position++;
-                }
-
-                Token current = GetToken(tokens, position) ?? throw new InvalidSyntaxException("Unexpected end of input. Expected a +, - or a number.");
+                Token current = GetToken(tokens, position) ?? throw new InvalidSyntaxException("Unexpected end of input. Expected a number.");
 
                 if (current.Kind != TokenKind.Number)
                 {
-                    throw new InvalidSyntaxException($"Invalid token <{current.Kind}> at position '{current.Position}'. Expected a number.");
+                    throw new InvalidSyntaxException($"Invalid token '{current.Text}' at position '{current.Position}'. Expected a number.");
                 }
 
-                Expression number = Expression.Constant(current.Value);
                 position++;
 
-                return negate ? Expression.Negate(number) : number;
+                return Expression.Constant(current.Value);
             }
         }
     }
